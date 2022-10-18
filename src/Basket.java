@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Basket {
+public class Basket implements Serializable {
 
     protected static int[] prices;
     protected static String[] products;
@@ -13,17 +13,27 @@ public class Basket {
         Basket.products = products;
     }
 
+    Basket(int[] prices, String[] products, int sumProducts, int[] countProducts) {
+        Basket.prices = prices;
+        Basket.products = products;
+        Basket.sumProducts = sumProducts;
+        Basket.countProducts = countProducts;
+    }
 
-    static Basket loadFromTxtFile(File file) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    public static int getSumProducts() {
+        return sumProducts;
+    }
 
-            String[] buy = reader.readLine().split(" ");
-            for (int i = 0; i < buy.length; i++) {
-                countProducts[i] = Integer.parseInt(buy[i]);
-            }
-            sumProducts = Integer.parseInt(reader.readLine());
+    public static int[] getCountProducts() {
+        return countProducts;
+    }
+
+    static Basket loadFromBinFile(File file) throws Exception {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            Basket basket = (Basket) in.readObject();
         }
-        return new Basket(prices, products);
+
+        return new Basket(prices, products, sumProducts, countProducts);
     }
 
     void addToCart(int productNum, int amount) {
@@ -46,18 +56,13 @@ public class Basket {
         System.out.println("Итого " + sumProducts + " руб");
     }
 
-
-    public void saveTxt(File file) throws IOException {
-        try (PrintWriter out = new PrintWriter(file)) {
-            for (int countProduct : countProducts) {
-                out.print(countProduct + " ");
-            }
-            out.print("\n");
-            out.print(sumProducts);
-            out.print("\n");
+    public void saveBin(File file)  throws Exception {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+            out.writeObject(new Basket(prices, products, sumProducts, countProducts));
         }
     }
 }
+
 
 
 

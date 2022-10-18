@@ -1,20 +1,20 @@
 import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
 
         Scanner scanner = new Scanner(System.in);
         String[] products = {"Хлеб", "Яблоки", "Молоко"};
         int[] prices = {100, 200, 300};
 
-        Basket basket = new Basket(prices, products);
-        File file = new File("basket.txt");
+
+        Basket basket = new Basket(prices, products, Basket.getSumProducts(), Basket.getCountProducts());
+        File file = new File("basket.bin");
         if (file.exists()) {
-            Basket.loadFromTxtFile(file);
+            Basket.loadFromBinFile(file);
             basket.printCart();
         }
 
@@ -37,7 +37,7 @@ public class Main {
             basket.addToCart(productNumber, productCount);
 
         }
-        basket.saveTxt(file);
+        basket.saveBin(file);
         basket.printCart();
     }
 
