@@ -2,38 +2,45 @@ import java.io.*;
 
 public class Basket implements Serializable {
 
-    protected static int[] prices;
-    protected static String[] products;
-    protected static int sumProducts;
-    protected static int[] countProducts = new int[3];
+    protected int[] prices;
+    protected String[] products;
+    protected int sumProducts;
+    protected int[] countProducts = new int[3];
 
 
     Basket(int[] prices, String[] products) {
-        Basket.prices = prices;
-        Basket.products = products;
+        this.prices = prices;
+        this.products = products;
+
     }
 
-    Basket(int[] prices, String[] products, int sumProducts, int[] countProducts) {
-        Basket.prices = prices;
-        Basket.products = products;
-        Basket.sumProducts = sumProducts;
-        Basket.countProducts = countProducts;
-    }
-
-    public static int getSumProducts() {
-        return sumProducts;
-    }
-
-    public static int[] getCountProducts() {
-        return countProducts;
+    Basket(int[] countProducts, int sumProducts) {
+        this.sumProducts = sumProducts;
+        this.countProducts = countProducts;
     }
 
     static Basket loadFromBinFile(File file) throws Exception {
+        Basket basket1;
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-            Basket basket = (Basket) in.readObject();
+            basket1 = (Basket) in.readObject();
         }
+        return new Basket(basket1.countProducts, basket1.sumProducts);
+    }
 
-        return new Basket(prices, products, sumProducts, countProducts);
+    public int getSumProducts() {
+        return sumProducts;
+    }
+
+    public int[] getCountProducts() {
+        return countProducts;
+    }
+
+    public int[] getPrices() {
+        return prices;
+    }
+
+    public String[] getProducts() {
+        return products;
     }
 
     void addToCart(int productNum, int amount) {
@@ -56,9 +63,9 @@ public class Basket implements Serializable {
         System.out.println("Итого " + sumProducts + " руб");
     }
 
-    public void saveBin(File file)  throws Exception {
+    public void saveBin(File file) throws Exception {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
-            out.writeObject(new Basket(prices, products, sumProducts, countProducts));
+            out.writeObject(new Basket(prices, products));
         }
     }
 }

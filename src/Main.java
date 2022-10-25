@@ -1,7 +1,8 @@
 import java.io.File;
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Main {
+public class Main implements Serializable {
 
     public static void main(String[] args) throws Exception {
 
@@ -11,13 +12,13 @@ public class Main {
         int[] prices = {100, 200, 300};
 
 
-        Basket basket = new Basket(prices, products, Basket.getSumProducts(), Basket.getCountProducts());
+        Basket basket = new Basket(prices, products);
         File file = new File("basket.bin");
         if (file.exists()) {
             Basket.loadFromBinFile(file);
+            Basket basket1 = new Basket(basket.countProducts, basket.sumProducts);
             basket.printCart();
         }
-
         System.out.println("Список возможных товаров: ");
 
         for (int i = 0; i < products.length; i++) {
