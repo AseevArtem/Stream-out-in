@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.Serializable;
 import java.util.Scanner;
 
 public class Main {
@@ -15,13 +14,13 @@ public class Main {
         Basket basket = new Basket(prices, products);
         File file = new File("basket.bin");
         if (file.exists()) {
-            Basket.loadFromBinFile(file);
+            basket = Basket.loadFromBinFile(file);
         }
-            System.out.println("Список возможных товаров: ");
+        System.out.println("Список возможных товаров: ");
 
-            for (int i = 0; i < products.length; i++) {
-                System.out.println((i + 1) + " " + (products[i]) + " " + (prices[i]) + " " + "руб/шт");
-            }
+        for (int i = 0; i < products.length; i++) {
+            System.out.println((i + 1) + " " + (products[i]) + " " + (prices[i]) + " " + "руб/шт");
+        }
 
 
         while (true) {

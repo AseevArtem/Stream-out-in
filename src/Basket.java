@@ -5,16 +5,13 @@ public class Basket implements Serializable {
     protected int[] prices;
     protected String[] products;
     private int sumProducts;
-    private int[] countProducts = new int[3];
-
+    private final int[] countProducts = new int[3];
 
 
     Basket(int[] prices, String[] products) {
         this.prices = prices;
         this.products = products;
     }
-
-
 
 
     static Basket loadFromBinFile(File file) throws Exception {
